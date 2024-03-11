@@ -36,7 +36,14 @@ def generate_event():
     # Generate random brief description
     brief_description = fake.sentence(nb_words=50)
     
-    return (event_type, title, entry_time, finish_time, entry_cost, location, brief_description)
+     # Generate random host name
+    host_name = fake.name()
+    
+    # Generate random offer
+    offers = ["meal after event", "meal during event", "lottery", "first five participant have a free drink", "autograph at closed doors", "low cost book selling", "record a documental on the event"]
+    offer = random.choice(offers)
+    
+    return (event_type, title, entry_time, finish_time, entry_cost, location, brief_description, host_name, offer)
 
 # Generate 100 events
 events = [generate_event() for _ in range(100)]
