@@ -4,6 +4,9 @@ from nltk.tokenize import word_tokenize
 from math import log10
 
 class EventsDataset:
+    """
+    class that represents a dataset for a set of events
+    """
     
     database = None
     path = None
@@ -14,7 +17,9 @@ class EventsDataset:
     DocumentTable = 'documents'
     WordTFS = 'word_document'
     
-    def __init__(self,root=None):
+    def __init__(self,name,root=None):
+        
+        self.name = name
         
         if root == None:
             self.path = Path('.')
@@ -27,7 +32,7 @@ class EventsDataset:
                 raise Exception('Ruta no valida')
             pass
         
-        self.database = DataBase('EventsDatabase',str(self.path))
+        self.database = DataBase(f'{name}DataBase',str(self.path))
         if self.database.Exists:
             self.created = False
             pass
@@ -236,6 +241,14 @@ class EventsDataset:
         result = self.database.selectFieldsFrom(self.WordTable,'idf',wordID=wordID)
         return result[0]['idf']
     
+    @property
+    def DocumentsCount(self):
+        """
+        return the number of documents in the dataset
+        the internal database most be opened before
+        """
+        return self.database.count(self.DocumentTable,'docID')
+    
     def computeWordsIDF(self):
         """
         computes the idf of each word in the database
@@ -244,7 +257,8 @@ class EventsDataset:
         documents = self.database.count(self.DocumentTable,'docID')
         words = [data['wordID'] for data in self.database.selectFrom(self.WordTable)]
         for wordID in words:
-            self.getWordIDF(wordID,documents)
+            idf = self.getWordIDF(wordID,documents)
+            self.updateWordIDF(wordID,idf)
             pass
         pass
     
@@ -268,11 +282,85 @@ class EventsDataset:
         the internal database most be opened before
         """
         
+        self.NormalisazeData()
+        
         word_document_pairs = [(data['word'],data['document']) for data in self.database.selectFrom(self.WordTFS)]
         for pair in word_document_pairs:
             weight = function(pair[0],pair[1])
             self.setWordDocumentWeight(pair[0],pair[1],weight)
             pass
         pass
+    
+    def NormalisazeData(self):
+        """
+        normalisaze the tf and idf values in the tables
+        """
+        
+        docsIDS = [data['docID'] for data in self.database.selectFieldsFrom(self.DocumentTable,'docID')]
+        for doc in docsIDS:
+            self.normalisazeTFDocument(doc)
+            pass
+        
+        self.normalisazeIDFWords()
+        pass
+    
+    def normalisazeTFDocument(self,docID):
+        """
+        normalisaze the tf of a document
+        the internak database most be opened before
+        """
+        
+        maxTF = self.database.max(self.WordTFS,'tf',document=docID)
+        words = [(data['word'],data['tf']) for data in self.database.selectFieldsFrom(self.WordTFS,'word','tf',document=docID)]
+        for word in words:
+            self.updateWordTF(word[0],docID,word[1]/maxTF)
+            pass
+        
+        pass
+    
+    def normalisazeIDFWords(self):
+        """
+        normalisaze the idf of all the words in the database
+        the internal database most be opened before
+        """
+        
+        maxIDF = self.database.max(self.WordTable,'idf')
+        words = [(data['wordID'],data['idf']) for data in self.database.selectFieldsFrom(self.WordTable,'wordID','idf')]
+        for word in words:
+            self.updateWordIDF(word[0],word[1]/maxIDF)
+            pass
+        pass
+    
+    def getDocumentsVectors(self,words):
+        """
+        return the vectors of all documents in dataset
+        the internal database most be opened before
+        """
+        documents = [data['docID'] for data in self.database.selectFieldsFrom(self.DocumentTable,'docID')]
+        
+        documents_vectors = []
+        
+        for doc in documents:
+            
+            doc_vector = []
+            
+            for word in words:
+            
+                wordID = self.getWordID(word)
+                weight = self.database.selectFieldsFrom(self.TableMatrix,'value',word=wordID,document=doc)
+            
+                if len(weight) == 0:
+                    doc_vector.append(0)
+                    pass
+                else:
+                    doc_vector.append(weight[0]['value'])
+                    pass
+                
+                pass
+                
+            documents_vectors.append(doc_vector)
+            pass
+        
+        return documents_vectors
     
     pass

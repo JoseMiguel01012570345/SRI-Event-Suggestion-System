@@ -2,8 +2,7 @@ from faker import Faker
 import datetime
 import random
 import os
-from datasets import EventsDataset
-from preprocessing import EventProcesser
+from models import SemanticLatentModel
 
 # os.system("cls")
 # Initialize Faker
@@ -79,7 +78,18 @@ def write_events_to_file(events, path):
 
 # dataset.computeWordsIDF()
 
-# weight_function = lambda wordID,docID: dataset.getWordIDFWithoutUpdate(wordID) * dataset.getWordTF(wordID,docID)
 # dataset.setMatrix(weight_function)
 
 # dataset.Close()
+
+model = SemanticLatentModel('Events','.')
+
+# events = []
+# for i in range(100):
+#     event = generate_event()
+#     events.append(event)
+#     pass
+
+# model.AddEvents(events)
+
+model.ParseQuery(input('>>> Type your query: '))

@@ -52,9 +52,7 @@ class Preprocesser:
             else:
                 lemma = self.lemmatizer.lemmatize(w_tuple[0])
                 pass
-            if lemma not in result:
-                result.append(lemma)
-                pass
+            result.append(lemma)
             pass
         return result
     
