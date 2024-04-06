@@ -2,8 +2,10 @@ from faker import Faker
 import datetime
 import random
 import os
+from datasets import EventsDataset
+from preprocessing import EventProcesser
 
-os.system("cls")
+# os.system("cls")
 # Initialize Faker
 fake = Faker()
 
@@ -60,7 +62,24 @@ def write_events_to_file(events, path):
             i+=1
 
 # Generate 100 events
-events = [generate_event() for _ in range(5000)]
+# events = [generate_event() for _ in range(5000)]
 
-# Write the events to a file
-write_events_to_file(events, './data/')
+# # Write the events to a file
+# write_events_to_file(events, './data/')
+
+# dataset = EventsDataset('.')
+# event_processer = EventProcesser()
+
+# dataset.Open()
+
+# for i in range(10):
+#     event = generate_event()
+#     dataset.AddEvent(event_processer.ProcessEvent(event))
+#     pass
+
+# dataset.computeWordsIDF()
+
+# weight_function = lambda wordID,docID: dataset.getWordIDFWithoutUpdate(wordID) * dataset.getWordTF(wordID,docID)
+# dataset.setMatrix(weight_function)
+
+# dataset.Close()

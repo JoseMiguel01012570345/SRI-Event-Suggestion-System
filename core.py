@@ -8,13 +8,16 @@ class core:
 
     import nltk
     
-    nltk.download('omw-1.4')
+    # nltk.download('omw-1.4')
 
     lemmatizer = WordNetLemmatizer()
 
     def __init__(self,docs):
         
         tokenized_docs = self.tokenizing_docs(docs)
+        for d in tokenized_docs:
+            print(d)
+            pass
         
         self.X = self.applying_tf_idf(tokenized_docs)
         
@@ -34,13 +37,13 @@ class core:
         
         return tokens
     
-    def query_to_vector(self, query):
+    # def query_to_vector(self, query):
         
-        # Transform the query into a vector using the same vectorizer used for the documents
-        query_str = ' '.join(query)
-        query_vector = self.vectorizer.transform([query_str])
+    #     # Transform the query into a vector using the same vectorizer used for the documents
+    #     query_str = ' '.join(query)
+    #     query_vector = self.vectorizer.transform([query_str])
         
-        return query_vector
+    #     return query_vector
     
 
     # def compute_similarity(self, query_vector,X):
@@ -119,7 +122,7 @@ class core:
             
         pass
     
-system('cls')
+system('clear')
 
 # Example documents
 documents = [
