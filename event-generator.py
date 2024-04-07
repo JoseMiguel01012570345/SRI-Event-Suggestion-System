@@ -34,7 +34,7 @@ def generate_event():
     # Generate random location
     location = fake.city()
     
-    # Generate random brief description
+    # Generate random brief descriptiondocuments
     brief_description = fake.sentence(nb_words=50)
     
      # Generate random host name
@@ -81,15 +81,3 @@ def write_events_to_file(events, path):
 # dataset.setMatrix(weight_function)
 
 # dataset.Close()
-
-model = SemanticLatentModel('Events','.')
-
-# events = []
-# for i in range(100):
-#     event = generate_event()
-#     events.append(event)
-#     pass
-
-# model.AddEvents(events)
-
-model.ParseQuery(input('>>> Type your query: '))

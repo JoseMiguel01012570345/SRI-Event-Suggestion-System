@@ -110,7 +110,7 @@ class EventsDataset:
         self.database.disconnect()
         pass
     
-    def AddEvent(self,event):
+    def AddEvent(self,event,event_processed):
         """
         add a new event to the database
         event most be a tuple with all the values for an event instance
@@ -130,7 +130,7 @@ class EventsDataset:
         
         eventdata = [eventID].__add__(data)
         self.database.insertInto(self.TableName,eventdata)
-        self.processEvent(event,eventID)
+        self.processEvent(event_processed,eventID)
         pass
     
     def addWord(self,word):
@@ -229,6 +229,7 @@ class EventsDataset:
         the internal database most be opened before
         """
         docs_with_word = self.database.count(self.WordTFS,'document',word=wordID)
+        if docs_with_word == 0: return 0
         idf = log10(documents_count/docs_with_word)
         self.updateWordIDF(wordID,idf)
         return idf
@@ -362,5 +363,13 @@ class EventsDataset:
             pass
         
         return documents_vectors
+    
+    def getEventByID(self,eventID):
+        """
+        return the event given the id
+        the internal database most be opened before
+        """
+        
+        return self.database.selectFrom(self.TableName,eventID=eventID)[0]
     
     pass
