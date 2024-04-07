@@ -1,5 +1,5 @@
 import tkinter as tk
-from core import SearchItem,SearchResult,Search
+from core import SearchItem,SearchResult,Search,AddEvent,GetHistorialTopics
 
 # Constants of the app
 SIZE = '1300x550'
@@ -15,13 +15,13 @@ BUTTON_FONT = ('Seogoe script',20,'italic')
 # Components of the app
 global SearchButton
 global SearchBar
-global Model
 global Events
 global screen
 global Items
 global Canvas
 global ScrollBar
 global Frame
+global SuggestionButton
 
 class Item:
     
@@ -36,7 +36,7 @@ class Item:
         self.Host = tk.Label(Frame,text=f'Host: {event.HostName}',font=FONT_Data)
         self.Offer = tk.Label(Frame,text=f'Offer: {event.Offer}',font=FONT_Section)
         self.Description = tk.Label(Frame,text=f'Description: {event.Description}',font=FONT_Section,wraplength=WIDTH)
-        self.LikeButton = tk.Button(Frame,text='Like')
+        self.LikeButton = tk.Button(Frame,text='Like',command=lambda : AddEvent(event))
         pass
     
     def Show(self):
@@ -63,9 +63,11 @@ class Item:
         self.Description.destroy()
         self.Host.destroy()
         self.Offer.destroy()
+        self.LikeButton.destroy()
         pass
     
     pass
+
 
 def GetQuery():
     global SearchBar
@@ -78,6 +80,32 @@ def GetQuery():
     Items.clear()
     
     Events = Search(SearchBar.get()).Results
+    for event in Events:
+        CreateEvent(event)
+        pass
+    
+    for item in Items:
+        item.Show()
+        pass
+    
+    pass
+
+def SuggestEvents():
+    global Events
+    global Items
+    
+    topics = GetHistorialTopics()
+    query = ''
+    for topic in topics:
+        query += f'{topic} '
+        pass
+    
+    for item in Items:
+        item.Destroy()
+        pass
+    Items.clear()
+    
+    Events = Search(query).Results
     for event in Events:
         CreateEvent(event)
         pass
@@ -124,7 +152,7 @@ Canvas.create_window((WIDTH//2, 0), window=Frame, anchor='nw')
 # Añadir contenido al Frame
 
 # Search label
-SearchLabel = tk.Label(Frame,text='Search',font=WINDOWS_FONT_LABEL)
+SearchLabel = tk.Label(Frame,text="Events Suggestion. Tell us what you likes",font=WINDOWS_FONT_LABEL)
 SearchLabel.pack(side='top',fill='x',expand=True)
 
 # SearchBar
@@ -134,6 +162,9 @@ SearchBar.pack(side='top',fill='x',expand=True)
 # Search button
 SearchButton = tk.Button(Frame,text='Search',font=BUTTON_FONT,command=GetQuery)
 SearchButton.pack(side='top')
+
+SuggestionButton = tk.Button(Frame,text='suggest events',command=SuggestEvents,font=FONT_SearchBar)
+SuggestionButton.pack(pady=30,side='bottom')
 
 # Ajustar el tamaño del Canvas según el contenido del Frame
 Frame.update_idletasks()

@@ -122,14 +122,3 @@ class TopicExtractor:
         return result
     
     pass
-
-
-
-documents = [
-    'Este es un texto sobre los perros',
-    'ahora hablamos sobre los gatos',
-    'que es un texto en terminos de perros y gatos'
-]
-
-extractor = TopicExtractor(documents)
-print(extractor.MostRelevantTopics)
