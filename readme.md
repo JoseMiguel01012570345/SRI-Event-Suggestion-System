@@ -21,7 +21,7 @@ We gave to the user the oportunity to send feedback to the system through a like
 
 # How to run
 
-Just uncomment the commented lines a the end of the file event_generator.py to fill up the database and run py event_generator.py if you are in windows,  for linux like systems you run python3 event_generator.py afterwards, uncomment again the lines and run py visual.py
+Just uncomment the commented lines a the end of the file event_generator.py to fill up the database and run `py event_generator.py` if you are in windows,  for linux like systems you run `python3 event_generator.py` afterwards, uncomment again the lines and run `py visual.py`
 
 # Implementation 
 
@@ -53,40 +53,41 @@ Data Variety: The code includes a variety of data types, including strings (for 
 
 There are several classes and functions that work together to manage events, perform searches, and extract topics from a collection of documents. It also interacts with a database to store and retrieve historical data.
 
-Key Components
+## Key Components
 
-Models: The SemanticLatentModel is imported but not defined in the provided code. It's likely used for semantic search or topic modeling.
+- Models: The SemanticLatentModel is imported but not defined in the provided code. It's likely used for semantic search or topic modeling.
 
-Topic Extraction: The TopicExtractor class is used to extract topics from a collection of documents. It takes a list of documents, the number of topics, and the number of words per topic as input.
+- Topic Extraction: The TopicExtractor class is used to extract topics from a collection of documents. It takes a list of documents, the number of topics, and the number of words per topic as input.
 
-Search and Event Management: The SearchItem and SearchResult classes are used to manage search results. The Search function performs a search query using the SemanticLatentModel, and the AddEvent function adds a new event to the historical data.
+- Search and Event Management: The SearchItem and SearchResult classes are used to manage search results. The Search function performs a search query using the SemanticLatentModel, and the AddEvent function adds a new event to the historical data.
 
- Brief explanation:
+
+Brief explanation:
 
 1. Event Management
 
-The SearchItem class represents an event with various attributes such as event type, title, entry time, finish time, entry cost, location, description, host name, and offer.
+- The `SearchItem` class represents an event with various attributes such as event type, title, entry time, finish time, entry cost, location, description, host name, and offer.
 
-The SearchResult class is a collection of SearchItem objects, representing the results of a search query.
+ - The `SearchResult` class is a collection of SearchItem objects, representing the results of a search query.
 
 3. Search Functionality
 
-The Search function uses the SemanticLatentModel to perform a search query based on a given query string.
+- The `Search` function uses the SemanticLatentModel to perform a search query based on a given query string.
 
-The AddEvent function adds a new event to the historical data, which is stored in the 'events' table in the database.
+- The `AddEvent` function adds a new event to the historical data, which is stored in the 'events' table in the database.
 
 4. Topic Extraction
 
-The GetHistorialTopics function uses the TopicExtractor to extract the most relevant topics from the historical data.
+- The `GetHistorialTopics` function uses the TopicExtractor to extract the most relevant topics from the historical data.
 
-5. Data Management
+5. Data Management 📈
 
-The GetHistorial function retrieves the last 30 queries made to the model from the database.
+- The `GetHistorial` function retrieves the last 30 queries made to the model from the database.
 
-The UpdateData function updates the data in the database with the current historical data.
+- The `UpdateData` function updates the data in the database with the current historical data.
 
 
-# Search
+# Search 🔍
 
 ### Initialization:
 
