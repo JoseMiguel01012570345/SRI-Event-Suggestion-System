@@ -79,7 +79,7 @@ def write_events_to_file(events, path):
 
 # dataset.Open()
 
-# for i in range(100):
+# for i in range(300):
 #     event = generate_event()
 #     dataset.AddEvent(event,event_processer.ProcessEvent(event))
 #     pass
